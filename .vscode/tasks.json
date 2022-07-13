@@ -1,0 +1,36 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "configure",
+            "type": "shell",
+            "group": "none",
+            "command": "cmake -DCMAKE_BUILD_TYPE=Debug -S . -B build"
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "group": "build",
+            "dependsOn": "configure",
+            "command": "cmake --build build"
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "group": "build",
+            "command": "rm -rf build"
+        },
+        {
+            "label": "rebuild",
+            "type": "shell",
+            "group": "build",
+            "dependsOrder":"sequence",
+            "dependsOn":[
+                "clean",
+                "build"
+            ]
+        }
+    ]
+}
