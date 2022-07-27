@@ -14,7 +14,7 @@
             "type": "shell",
             "group": "build",
             "dependsOn": "configure",
-            "command": "cmake --build build -j $(nproc)"
+            "command": "./compile.sh && cmake --build build -j $(nproc)"
         },
         {
             "label": "clean",

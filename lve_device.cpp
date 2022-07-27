@@ -139,6 +139,15 @@ namespace lve
 
         for (const auto &device : devices)
         {
+            VkPhysicalDeviceProperties properties;
+            vkGetPhysicalDeviceProperties(device, &properties);
+            std::cout << "available: " << properties.deviceName << std::endl;
+        }
+
+        std::cout << std::endl;
+
+        for (const auto &device : devices)
+        {
             if (isDeviceSuitable(device))
             {
                 physicalDevice = device;
@@ -152,7 +161,7 @@ namespace lve
         }
 
         vkGetPhysicalDeviceProperties(physicalDevice, &properties);
-        std::cout << "physical device: " << properties.deviceName << std::endl;
+        std::cout << "Picked physical device: " << properties.deviceName << std::endl;
     }
 
     void LveDevice::createLogicalDevice()

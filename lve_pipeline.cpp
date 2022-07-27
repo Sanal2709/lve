@@ -12,7 +12,7 @@ namespace lve
                              const std::string &fragFilepath,
                              const PipelineConfigInfo &configInfo) : lveDevice{device}
     {
-        createGrahicsPipeline(vertFilepath, fragFilepath, configInfo);
+        createGraphicsPipeline(vertFilepath, fragFilepath, configInfo);
     }
 
     std::vector<char> LvePipeline::readFile(const std::string &filepath)
@@ -35,9 +35,9 @@ namespace lve
         return buffer;
     }
 
-    void LvePipeline::createGrahicsPipeline(const std::string &vertFilepath,
-                                            const std::string &fragFilepath,
-                                            const PipelineConfigInfo &configInfo)
+    void LvePipeline::createGraphicsPipeline(const std::string &vertFilepath,
+                                             const std::string &fragFilepath,
+                                             const PipelineConfigInfo &configInfo)
     {
         auto vertCode = readFile(vertFilepath);
         auto fragCode = readFile(fragFilepath);

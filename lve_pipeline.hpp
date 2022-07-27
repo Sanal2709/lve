@@ -29,7 +29,7 @@ namespace lve
     private:
         static std::vector<char> readFile(const std::string &filepath);
 
-        void createGrahicsPipeline(const std::string &vertFilepath,
+        void createGraphicsPipeline(const std::string &vertFilepath,
                                    const std::string &fragFilepath,
                                    const PipelineConfigInfo &configInfo);
 
