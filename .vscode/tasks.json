@@ -7,14 +7,14 @@
             "label": "configure",
             "type": "shell",
             "group": "none",
-            "command": "cmake -DCMAKE_BUILD_TYPE=Debug -S . -B build"
+            "command": "cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -S . -B build"
         },
         {
             "label": "build",
             "type": "shell",
             "group": "build",
             "dependsOn": "configure",
-            "command": "cmake --build build"
+            "command": "cmake --build build -j $(nproc)"
         },
         {
             "label": "clean",
