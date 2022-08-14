@@ -4,6 +4,11 @@
 #include "lve_device.hpp"
 #include "lve_window.hpp"
 #include "lve_pipeline.hpp"
+#include "lve_swap_chain.hpp"
+
+// std
+#include <memory>
+#include <vector>
 
 namespace lve
 {
@@ -13,15 +18,25 @@ namespace lve
         static constexpr int WIDTH = 1024;
         static constexpr int HEIGHT = 768;
 
+        FirstApp();
+        ~FirstApp();
+
+        FirstApp(const FirstApp &) = delete;
+        FirstApp &operator=(const FirstApp &) = delete;
+
         void run();
 
     private:
+        void createPipelineLayout();
+        void createPipeline();
+        void createCommandBuffers();
+        void drawFrame();
         LveWindow lveWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
         LveDevice lveDevice{lveWindow};
-        LvePipeline lvePipeline{lveDevice,
-                                "shaders/simple_shader.vert.spv",
-                                "shaders/simple_shader.frag.spv",
-                                LvePipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
+        LveSwapChain lveSwapChain{lveDevice, lveWindow.getExtent()};
+        std::unique_ptr<LvePipeline> lvePipeline;
+        VkPipelineLayout pipelineLayout;
+        std::vector<VkCommandBuffer> commandBuffers;
     };
 } // namespace lve
 

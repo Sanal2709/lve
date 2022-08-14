@@ -12,7 +12,6 @@ namespace lve
     {
         VkViewport viewport;
         VkRect2D scissors;
-        VkPipelineViewportStateCreateInfo viewportInfo;
         VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
         VkPipelineRasterizationStateCreateInfo rasterizationInfo;
         VkPipelineMultisampleStateCreateInfo multisampleInfo;
@@ -42,8 +41,8 @@ namespace lve
         static std::vector<char> readFile(const std::string &filepath);
 
         void createGraphicsPipeline(const std::string &vertFilepath,
-                                   const std::string &fragFilepath,
-                                   const PipelineConfigInfo &configInfo);
+                                    const std::string &fragFilepath,
+                                    const PipelineConfigInfo &configInfo);
 
         void createShaderModule(const std::vector<char> &code,
                                 VkShaderModule *shaderModule);
