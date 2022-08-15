@@ -178,7 +178,7 @@ namespace lve
         configInfo.multisampleInfo.alphaToCoverageEnable = VK_FALSE; // Optional
         configInfo.multisampleInfo.alphaToOneEnable = VK_FALSE;      // Optional
 
-        configInfo.colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_B_BIT |
+        configInfo.colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT |
                                                          VK_COLOR_COMPONENT_G_BIT |
                                                          VK_COLOR_COMPONENT_B_BIT |
                                                          VK_COLOR_COMPONENT_A_BIT;
