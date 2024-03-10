@@ -40,7 +40,7 @@ namespace lve
 
         // Not copyable or movable
         LveDevice(const LveDevice &) = delete;
-        LveDevice& operator=(const LveDevice &) = delete;
+        LveDevice &operator=(const LveDevice &) = delete;
         LveDevice(LveDevice &&) = delete;
         LveDevice &operator=(LveDevice &&) = delete;
 

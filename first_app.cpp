@@ -3,6 +3,7 @@
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 
 // std
 #include <array>
@@ -13,12 +14,13 @@ namespace lve
 {
     struct SimplePushConstantData
     {
+        glm::mat2 transform{1.f};
         glm::vec2 offset;
         alignas(16) glm::vec3 color;
     };
     FirstApp::FirstApp()
     {
-        loadModels();
+        loadGameObjects();
         createPipelineLayout();
         recreateSwapChain();
         createCommandBuffers();
@@ -79,19 +81,23 @@ namespace lve
     void FirstApp::recreateSwapChain()
     {
         auto extent = lveWindow.getExtent();
-        while(extent.width == 0 || extent.height == 0){
+        while (extent.width == 0 || extent.height == 0)
+        {
             extent = lveWindow.getExtent();
             glfwWaitEvents();
         }
 
         vkDeviceWaitIdle(lveDevice.device());
 
-        if(lveSwapChain == nullptr){
+        if (lveSwapChain == nullptr)
+        {
             lveSwapChain = std::make_unique<LveSwapChain>(lveDevice, extent);
         }
-        else{
+        else
+        {
             lveSwapChain = std::make_unique<LveSwapChain>(lveDevice, extent, std::move(lveSwapChain));
-            if(lveSwapChain->imageCount() != commandBuffers.size()){
+            if (lveSwapChain->imageCount() != commandBuffers.size())
+            {
                 freeCommandBuffers();
                 createCommandBuffers();
             }
@@ -123,9 +129,6 @@ namespace lve
 
     void FirstApp::recordCommandBuffer(int imageIndex)
     {
-        static int frame = 0;
-        frame = (frame +1) % 1000;
-
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
@@ -161,18 +164,7 @@ namespace lve
         vkCmdSetViewport(commandBuffers[imageIndex], 0, 1, &viewport);
         vkCmdSetScissor(commandBuffers[imageIndex], 0, 1, &scissor);
 
-        lvePipeline->bind(commandBuffers[imageIndex]);
-        lveModel->bind(commandBuffers[imageIndex]);
-
-        for(int i = 0; i < 4; i++){
-            SimplePushConstantData push{};
-            push.offset = {-0.5f + frame * 0.002f, -0.4f + i*0.25f};
-            push.color = {0.0f, 0.0f, 0.2f + 0.2f*i};
-
-            vkCmdPushConstants(commandBuffers[imageIndex], pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0,
-            sizeof(SimplePushConstantData), &push);
-            lveModel->draw(commandBuffers[imageIndex]);
-        }
+        renderGameObjects(commandBuffers[imageIndex]);
 
         vkCmdEndRenderPass(commandBuffers[imageIndex]);
 
@@ -182,12 +174,33 @@ namespace lve
         }
     }
 
+    void FirstApp::renderGameObjects(VkCommandBuffer commandBuffer)
+    {
+        lvePipeline->bind(commandBuffer);
+
+        for (auto &obj : gameObjects)
+        {
+            obj.transform2D.rotation = glm::mod(obj.transform2D.rotation + 0.01f, glm::two_pi<float>());
+
+            SimplePushConstantData push{};
+            push.offset = obj.transform2D.translation;
+            push.color = obj.color;
+            push.transform = obj.transform2D.mat2();
+
+            vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0,
+                               sizeof(SimplePushConstantData), &push);
+            obj.model->bind(commandBuffer);
+            obj.model->draw(commandBuffer);
+        }
+    }
+
     void FirstApp::drawFrame()
     {
         uint32_t imageIndex;
         auto result = lveSwapChain->acquireNextImage(&imageIndex);
 
-        if(result == VK_ERROR_OUT_OF_DATE_KHR){
+        if (result == VK_ERROR_OUT_OF_DATE_KHR)
+        {
             recreateSwapChain();
             return;
         }
@@ -200,7 +213,8 @@ namespace lve
         recordCommandBuffer(imageIndex);
 
         result = lveSwapChain->submitCommandBuffers(&commandBuffers[imageIndex], &imageIndex);
-        if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || lveWindow.wasWindowResized()){
+        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || lveWindow.wasWindowResized())
+        {
             lveWindow.resetWindowResizedFlag();
             recreateSwapChain();
             return;
@@ -212,14 +226,23 @@ namespace lve
         }
     }
 
-    void FirstApp::loadModels()
+    void FirstApp::loadGameObjects()
     {
         std::vector<LveModel::Vertex> vertices{
             {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
             {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
             {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}};
 
-        lveModel = std::make_unique<LveModel>(lveDevice, vertices);
+        auto lveModel = std::make_shared<LveModel>(lveDevice, vertices);
+
+        auto triangle = LveGameObject::createGameObject();
+        triangle.model = lveModel;
+        triangle.color = {0.1f, 0.8f, 0.1f};
+        triangle.transform2D.translation.x = 0.2f;
+        triangle.transform2D.scale = {2.f, .5f};
+        triangle.transform2D.rotation = .25f * glm::two_pi<float>();
+
+        gameObjects.push_back(std::move(triangle));
     }
 
 } // namespace lve

@@ -4,4 +4,4 @@ sudo apt install vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-to
 
 sudo cp /dependencies/glslc /usr/local/bin
 
-https://github.com/google/shaderc/blob/main/downloads.md     # Shader Compiler
+https://github.com/google/shaderc/blob/main/downloads.md # Shader Compiler

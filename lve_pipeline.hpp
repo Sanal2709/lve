@@ -10,8 +10,8 @@ namespace lve
 {
     struct PipelineConfigInfo
     {
-        PipelineConfigInfo(const PipelineConfigInfo&) = delete;
-        PipelineConfigInfo& operator=(const PipelineConfigInfo&) = delete;
+        PipelineConfigInfo(const PipelineConfigInfo &) = delete;
+        PipelineConfigInfo &operator=(const PipelineConfigInfo &) = delete;
 
         VkPipelineViewportStateCreateInfo viewportInfo;
         VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
@@ -36,11 +36,11 @@ namespace lve
         ~LvePipeline();
 
         LvePipeline(const LvePipeline &) = delete;
-        LvePipeline& operator=(const LvePipeline &) = delete;
+        LvePipeline &operator=(const LvePipeline &) = delete;
 
         void bind(VkCommandBuffer commandBuffer);
 
-        static void defaultPipelineConfigInfo(PipelineConfigInfo& configInfo);
+        static void defaultPipelineConfigInfo(PipelineConfigInfo &configInfo);
 
     private:
         static std::vector<char> readFile(const std::string &filepath);

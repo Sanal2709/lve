@@ -132,11 +132,12 @@ namespace lve
         }
     }
 
-    void LvePipeline::bind(VkCommandBuffer commandBuffer){
+    void LvePipeline::bind(VkCommandBuffer commandBuffer)
+    {
         vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
     }
 
-    void LvePipeline::defaultPipelineConfigInfo(PipelineConfigInfo& configInfo)
+    void LvePipeline::defaultPipelineConfigInfo(PipelineConfigInfo &configInfo)
     {
         configInfo.inputAssemblyInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
         configInfo.inputAssemblyInfo.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
