@@ -1,5 +1,4 @@
-#ifndef LVE_PIPELINE_HPP
-#define LVE_PIPELINE_HPP
+#pragma once
 
 #include "lve_device.hpp"
 #include <string>
@@ -58,5 +57,3 @@ namespace lve
         VkShaderModule fragShaderModule;
     };
 } // namespace lve
-
-#endif

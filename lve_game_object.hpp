@@ -1,5 +1,4 @@
-#ifndef LVE_GAME_OBJECT_HPP
-#define LVE_GAME_OBJECT_HPP
+#pragma once
 
 #include "lve_model.hpp"
 
@@ -55,5 +54,3 @@ namespace lve
         id_t id;
     };
 }
-
-#endif /* LVE_GAME_OBJECT_HPP */

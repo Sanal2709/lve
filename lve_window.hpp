@@ -1,5 +1,4 @@
-#ifndef LVE_WINDOW_HPP
-#define LVE_WINDOW_HPP
+#pragma once
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -39,5 +38,3 @@ namespace lve
     };
 
 } // namespace lve
-
-#endif

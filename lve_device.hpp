@@ -1,5 +1,4 @@
-#ifndef LVE_DEVICE_HPP
-#define LVE_DEVICE_HPP
+#pragma once
 
 #include "lve_window.hpp"
 
@@ -111,5 +110,3 @@ namespace lve
     };
 
 } // namespace lve
-
-#endif // LVE_DEVICE_HPP
