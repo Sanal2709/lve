@@ -26,8 +26,8 @@
             "label": "rebuild",
             "type": "shell",
             "group": "build",
-            "dependsOrder":"sequence",
-            "dependsOn":[
+            "dependsOrder": "sequence",
+            "dependsOn": [
                 "clean",
                 "build"
             ]

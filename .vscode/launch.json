@@ -2,28 +2,56 @@
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
+    "version": "2.0.0",
     "configurations": [
-      {
-        "name": "Build and debug",
-        "type": "cppdbg",
-        "request": "launch",
-        "program": "${workspaceFolder}/build/lve",
-        "args": [],
-        "stopAtEntry": false,
-        "cwd": "${workspaceFolder}",
-        "environment": [],
-        "externalConsole": false,
-        "MIMode": "gdb",
-        "setupCommands": [
-          {
-            "description": "Enable pretty-printing for gdb",
-            "text": "-enable-pretty-printing",
-            "ignoreFailures": true
-          }
-        ],
-        "preLaunchTask": "build",
-        "miDebuggerPath": "/usr/bin/gdb"
-      }
+        {
+            "name": "Build and debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/lve",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
+            "osx": {
+                "targetArchitecture": "arm64",
+                "MIMode": "lldb",
+                "environment": [
+                    {
+                        "name": "VULKAN_SDK",
+                        "value": "/Users/sanal/VulkanSDK/1.4.309.0/macOS/"
+                    },
+                    {
+                        "name": "PATH",
+                        "value": "$PATH:/Users/sanal/VulkanSDK/1.4.309.0/macOS/bin"
+                    },
+                    {
+                        "name": "DYLD_LIBRARY_PATH",
+                        "value": "/Users/sanal/VulkanSDK/1.4.309.0/macOS/lib:${DYLD_LIBRARY_PATH:-}"
+                    },
+                    {
+                        "name": "VK_ADD_LAYER_PATH",
+                        "value": "/Users/sanal/VulkanSDK/1.4.309.0/macOS/share/vulkan/explicit_layer.d"
+                    },
+                    {
+                        "name": "VK_ICD_FILENAMES",
+                        "value": "/Users/sanal/VulkanSDK/1.4.309.0/macOS/share/vulkan/icd.d/MoltenVK_icd.json"
+                    },
+                    {
+                        "name": "VK_DRIVER_FILES",
+                        "value": "/Users/sanal/VulkanSDK/1.4.309.0/macOS/share/vulkan/icd.d/MoltenVK_icd.json"
+                    },
+                    {
+                        "name": "PKG_CONFIG_PATH",
+                        "value": "/Users/sanal/VulkanSDK/1.4.309.0/macOS/lib/pkgconfig:$PKG_CONFIG_PATH"
+                    }
+                ],
+            },
+            "linux": {
+                "miDebuggerPath": "/usr/bin/gdb",
+                "MIMode": "gdb"
+            },
+            "preLaunchTask": "build"
+        }
     ]
-  }
+}
